@@ -1,7 +1,7 @@
 # Проект «Большое путешествие»
 
 * Студент: [Lev Diakov](https://up.htmlacademy.ru/ecmascript/23/user/1992749).
-* Наставник: `Неизвестно`.
+* Наставник: `Yulia Volkova`.
 
 ---
 
