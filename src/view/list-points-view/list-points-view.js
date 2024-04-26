@@ -1,11 +1,9 @@
 import { createElement } from '../../render';
 
-function createListPointsTemplate() {
-  return `
+const createListPointsTemplate = () => `
     <ul class="trip-events__list">
     </ul>
   `;
-}
 
 export default class ListPointsView {
   getTemplate() {

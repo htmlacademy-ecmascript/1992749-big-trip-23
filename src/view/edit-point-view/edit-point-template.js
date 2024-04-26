@@ -1,9 +1,9 @@
 import { capitalizeLetter } from '../../utils';
-const typesPoint = ['taxi', 'bus', 'train', 'ship', 'drive', 'flight', 'check-in', 'sightseeing', 'restaurant'];
-const namesDestination = ['Milan', 'Paris', 'Valencia', 'Sochi', 'Madrid', 'Barcelona', 'Rome', 'Helsinki', 'Saint Petersburg', 'Munich'];
+import { namesDestination } from '../../mock/destinations';
 
-function createEditPointTemplate() {
-  return `
+const TYPES_POINT = ['taxi', 'bus', 'train', 'ship', 'drive', 'flight', 'check-in', 'sightseeing', 'restaurant'];
+
+const createEditPointTemplate = () => `
 <li class="trip-events__item">
   <form class="event event--edit" action="#" method="post">
     <header class="event__header">
@@ -18,7 +18,7 @@ function createEditPointTemplate() {
           <fieldset class="event__type-group">
             <legend class="visually-hidden">Event type</legend>
 
-            ${typesPoint.map((item) => `
+            ${TYPES_POINT.map((item) => `
             <div class="event__type-item">
               <input id="event-type-${item}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${item}">
               <label class="event__type-label  event__type-label--${item}" for="event-type-${item}-1">${capitalizeLetter(item)}</label>
@@ -125,6 +125,5 @@ function createEditPointTemplate() {
   </form>
 </li>
   `;
-}
 
 export { createEditPointTemplate };

@@ -1,13 +1,12 @@
 import { createElement } from '../render';
 import { capitalizeLetter } from '../utils';
 
-const valuesToFilter = ['everything', 'future', 'present', 'past'];
+const FILTER_OPTIONS = ['everything', 'future', 'present', 'past'];
 
-function createFilterTemplate() {
-  return `
+const createFilterTemplate = () => `
     <form class="trip-filters" action="#" method="get">
 
-    ${valuesToFilter.map((item) => `
+    ${FILTER_OPTIONS.map((item) => `
       <div class="trip-filters__filter">
         <input id="filter-${item}" class="trip-filters__filter-input  visually-hidden" type="radio" name="trip-filter" value="${item}" checked>
         <label class="trip-filters__filter-label" for="filter-${item}">${capitalizeLetter(item)}</label>
@@ -17,7 +16,6 @@ function createFilterTemplate() {
       <button class="visually-hidden" type="submit">Accept filter</button>
     </form>
   `;
-}
 
 export default class FilterView {
   getTemplate() {
