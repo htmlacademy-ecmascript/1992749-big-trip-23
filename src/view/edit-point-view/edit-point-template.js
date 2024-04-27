@@ -1,7 +1,80 @@
 import { capitalizeLetter } from '../../utils';
 import { namesDestination } from '../../mock/destinations';
 
+const iseEitingForm = true;
 const TYPES_POINT = ['taxi', 'bus', 'train', 'ship', 'drive', 'flight', 'check-in', 'sightseeing', 'restaurant'];
+
+const getPointType = () => TYPES_POINT.map((item) => `
+<div class="event__type-item">
+  <input id="event-type-${item}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${item}">
+  <label class="event__type-label  event__type-label--${item}" for="event-type-${item}-1">${capitalizeLetter(item)}</label>
+</div>
+`).join('');
+
+const getAvailableOffers = () => `
+<div class="event__available-offers">
+  <div class="event__offer-selector">
+    <input class="event__offer-checkbox  visually-hidden" id="event-offer-luggage-1" type="checkbox" name="event-offer-luggage" checked>
+    <label class="event__offer-label" for="event-offer-luggage-1">
+      <span class="event__offer-title">Add luggage</span>
+      &plus;&euro;&nbsp;
+      <span class="event__offer-price">50</span>
+    </label>
+  </div>
+
+  <div class="event__offer-selector">
+    <input class="event__offer-checkbox  visually-hidden" id="event-offer-comfort-1" type="checkbox" name="event-offer-comfort" checked>
+    <label class="event__offer-label" for="event-offer-comfort-1">
+      <span class="event__offer-title">Switch to comfort</span>
+      &plus;&euro;&nbsp;
+      <span class="event__offer-price">80</span>
+    </label>
+  </div>
+
+  <div class="event__offer-selector">
+    <input class="event__offer-checkbox  visually-hidden" id="event-offer-meal-1" type="checkbox" name="event-offer-meal">
+    <label class="event__offer-label" for="event-offer-meal-1">
+      <span class="event__offer-title">Add meal</span>
+      &plus;&euro;&nbsp;
+      <span class="event__offer-price">15</span>
+    </label>
+  </div>
+
+  <div class="event__offer-selector">
+    <input class="event__offer-checkbox  visually-hidden" id="event-offer-seats-1" type="checkbox" name="event-offer-seats">
+      <label class="event__offer-label" for="event-offer-seats-1">
+      <span class="event__offer-title">Choose seats</span>
+      &plus;&euro;&nbsp;
+      <span class="event__offer-price">5</span>
+    </label>
+  </div>
+
+  <div class="event__offer-selector">
+    <input class="event__offer-checkbox  visually-hidden" id="event-offer-train-1" type="checkbox" name="event-offer-train">
+      <label class="event__offer-label" for="event-offer-train-1">
+      <span class="event__offer-title">Travel by train</span>
+      &plus;&euro;&nbsp;
+      <span class="event__offer-price">40</span>
+    </label>
+  </div>
+</div>
+`;
+
+const getDestinationDescription = () => `
+<p class="event__destination-description">Geneva is a city in Switzerland that lies at the southern tip of expansive Lac Léman (Lake Geneva). Surrounded by the Alps and Jura mountains, the city has views of dramatic Mont Blanc.</p>
+`;
+
+const getPhotosContainer = () => `
+<div class="event__photos-container">
+  <div class="event__photos-tape">
+    <img class="event__photo" src="img/photos/1.jpg" alt="Event photo">
+    <img class="event__photo" src="img/photos/2.jpg" alt="Event photo">
+    <img class="event__photo" src="img/photos/3.jpg" alt="Event photo">
+    <img class="event__photo" src="img/photos/4.jpg" alt="Event photo">
+    <img class="event__photo" src="img/photos/5.jpg" alt="Event photo">
+  </div>
+</div>
+`;
 
 const createEditPointTemplate = () => `
 <li class="trip-events__item">
@@ -18,12 +91,7 @@ const createEditPointTemplate = () => `
           <fieldset class="event__type-group">
             <legend class="visually-hidden">Event type</legend>
 
-            ${TYPES_POINT.map((item) => `
-            <div class="event__type-item">
-              <input id="event-type-${item}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${item}">
-              <label class="event__type-label  event__type-label--${item}" for="event-type-${item}-1">${capitalizeLetter(item)}</label>
-            </div>
-            `).join('')}
+          ${getPointType()}
 
           </fieldset>
         </div>
@@ -34,13 +102,13 @@ const createEditPointTemplate = () => `
           Flight
         </label>
         <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="Chamonix" list="destination-list-1">
-        <datalist id="destination-list-1">
+          <datalist id="destination-list-1">
 
           ${namesDestination.map((item) => `
             <option value="${item}"></option>
           `).join('')}
 
-        </datalist>
+          </datalist>
       </div>
 
       <div class="event__field-group  event__field-group--time">
@@ -59,68 +127,29 @@ const createEditPointTemplate = () => `
         <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="160">
       </div>
 
-      <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
-      <button class="event__reset-btn" type="reset">Delete</button>
-      <button class="event__rollup-btn" type="button">
-        <span class="visually-hidden">Open event</span>
-      </button>
+        <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
+        <button class="event__reset-btn" type="reset">${iseEitingForm ? 'Delete' : 'Cancel'}</button>
+
+        ${iseEitingForm ? `<button class="event__rollup-btn" type="button">
+        <span class="visually-hidden">Open event</span></button>` : ''}
+
     </header>
     <section class="event__details">
-      <section class="event__section  event__section--offers">
-        <h3 class="event__section-title  event__section-title--offers">Offers</h3>
+        <section class="event__section  event__section--offers">
+          <h3 class="event__section-title  event__section-title--offers">Offers</h3>
 
-        <div class="event__available-offers">
-          <div class="event__offer-selector">
-            <input class="event__offer-checkbox  visually-hidden" id="event-offer-luggage-1" type="checkbox" name="event-offer-luggage" checked>
-            <label class="event__offer-label" for="event-offer-luggage-1">
-              <span class="event__offer-title">Add luggage</span>
-              &plus;&euro;&nbsp;
-              <span class="event__offer-price">50</span>
-            </label>
-          </div>
+          ${getAvailableOffers()}
 
-          <div class="event__offer-selector">
-            <input class="event__offer-checkbox  visually-hidden" id="event-offer-comfort-1" type="checkbox" name="event-offer-comfort" checked>
-            <label class="event__offer-label" for="event-offer-comfort-1">
-              <span class="event__offer-title">Switch to comfort</span>
-              &plus;&euro;&nbsp;
-              <span class="event__offer-price">80</span>
-            </label>
-          </div>
+        </section>
 
-          <div class="event__offer-selector">
-            <input class="event__offer-checkbox  visually-hidden" id="event-offer-meal-1" type="checkbox" name="event-offer-meal">
-            <label class="event__offer-label" for="event-offer-meal-1">
-              <span class="event__offer-title">Add meal</span>
-              &plus;&euro;&nbsp;
-              <span class="event__offer-price">15</span>
-            </label>
-          </div>
+        <section class="event__section  event__section--destination">
+          <h3 class="event__section-title  event__section-title--destination">Destination</h3>
 
-          <div class="event__offer-selector">
-            <input class="event__offer-checkbox  visually-hidden" id="event-offer-seats-1" type="checkbox" name="event-offer-seats">
-            <label class="event__offer-label" for="event-offer-seats-1">
-              <span class="event__offer-title">Choose seats</span>
-              &plus;&euro;&nbsp;
-              <span class="event__offer-price">5</span>
-            </label>
-          </div>
+          ${getDestinationDescription()}
 
-          <div class="event__offer-selector">
-            <input class="event__offer-checkbox  visually-hidden" id="event-offer-train-1" type="checkbox" name="event-offer-train">
-            <label class="event__offer-label" for="event-offer-train-1">
-              <span class="event__offer-title">Travel by train</span>
-              &plus;&euro;&nbsp;
-              <span class="event__offer-price">40</span>
-            </label>
-          </div>
-        </div>
-      </section>
+          ${getPhotosContainer()}
 
-      <section class="event__section  event__section--destination">
-        <h3 class="event__section-title  event__section-title--destination">Destination</h3>
-        <p class="event__destination-description">Chamonix-Mont-Blanc (usually shortened to Chamonix) is a resort area near the junction of France, Switzerland and Italy. At the base of Mont Blanc, the highest summit in the Alps, it's renowned for its skiing.</p>
-      </section>
+        </section>
     </section>
   </form>
 </li>
