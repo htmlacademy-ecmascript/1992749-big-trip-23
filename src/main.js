@@ -1,6 +1,6 @@
 import PrimePresenter from './presenter/prime-presenter.js';
 
-const boardPresenter = new PrimePresenter();
+const primePresenter = new PrimePresenter();
 
-boardPresenter.init();
+primePresenter.init();
 

@@ -1,13 +1,7 @@
-import { createElement } from '../render';
-import { capitalizeLetter } from '../utils';
+import { createElement } from '../../render';
+import { capitalizeLetter } from '../../utils';
+import { SORTING_OPTIONS } from '../../consts';
 
-const SORTING_OPTIONS = [
-  { type: 'day' },
-  { type: 'event', checked: true },
-  { type: 'time' },
-  { type: 'price' },
-  { type: 'offers', checked: true },
-];
 
 const createSortTemplate = () => `
     <form class="trip-events__trip-sort  trip-sort" action="#" method="get">

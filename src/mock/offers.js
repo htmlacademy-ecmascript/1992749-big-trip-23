@@ -1,3 +1,5 @@
+import { getOffers } from './utils-mock';
+
 const newOffers = [
   {
     'type': 'taxi',
@@ -205,15 +207,6 @@ const newOffers = [
   }
 ];
 
-const getOffers = () => newOffers.map(({
-  'type': type,
-  // eslint-disable-next-line no-shadow
-  'offers': offers
-}) => ({
-  type,
-  offers
-}));
-
 const offers = getOffers();
 offers.forEach((item) => {
 
@@ -230,4 +223,6 @@ offers.forEach((item) => {
 
 });
 
-export { offers };
+export { offers, newOffers };
+
+

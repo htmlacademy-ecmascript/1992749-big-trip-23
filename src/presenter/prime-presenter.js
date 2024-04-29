@@ -1,6 +1,6 @@
 import { render } from '../render';
-import FilterView from '../view/filter-view';
-import SortView from '../view/sort-view';
+import FilterView from '../view/filter-view/filter-view';
+import SortView from '../view/sort-view/sort-view';
 import ListPointsView from '../view/list-points-view/list-points-view';
 import EditPointView from '../view/edit-point-view/edit-point-view';
 import PointView from '../view/point-view/point-view';

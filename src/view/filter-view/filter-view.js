@@ -1,7 +1,7 @@
-import { createElement } from '../render';
-import { capitalizeLetter } from '../utils';
+import { createElement } from '../../render';
+import { capitalizeLetter } from '../../utils';
+import { FILTER_OPTIONS } from '../../consts';
 
-const FILTER_OPTIONS = ['everything', 'future', 'present', 'past'];
 
 const createFilterTemplate = () => `
     <form class="trip-filters" action="#" method="get">

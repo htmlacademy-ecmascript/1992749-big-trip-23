@@ -1,10 +1,10 @@
 import { capitalizeLetter } from '../../utils';
 import { namesDestination } from '../../mock/destinations';
+import { POINT_TYPES } from '../../consts';
 
-const iseEitingForm = true;
-const TYPES_POINT = ['taxi', 'bus', 'train', 'ship', 'drive', 'flight', 'check-in', 'sightseeing', 'restaurant'];
+const isEditingForm = true;
 
-const getPointType = () => TYPES_POINT.map((item) => `
+const getPointType = () => POINT_TYPES.map((item) => `
 <div class="event__type-item">
   <input id="event-type-${item}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${item}">
   <label class="event__type-label  event__type-label--${item}" for="event-type-${item}-1">${capitalizeLetter(item)}</label>
@@ -128,9 +128,9 @@ const createEditPointTemplate = () => `
       </div>
 
         <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
-        <button class="event__reset-btn" type="reset">${iseEitingForm ? 'Delete' : 'Cancel'}</button>
+        <button class="event__reset-btn" type="reset">${isEditingForm ? 'Delete' : 'Cancel'}</button>
 
-        ${iseEitingForm ? `<button class="event__rollup-btn" type="button">
+        ${isEditingForm ? `<button class="event__rollup-btn" type="button">
         <span class="visually-hidden">Open event</span></button>` : ''}
 
     </header>
