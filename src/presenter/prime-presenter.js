@@ -24,7 +24,7 @@ export default class PrimePresenter {
     render(new EditPointView(), this.listPointsContainer.getElement());
 
     for (let i = 0; i < this.primePoints.length; i++) {
-      render(new PointView(), this.listPointsContainer.getElement());
+      render(new PointView({point: this.primePoints[i]}), this.listPointsContainer.getElement());
     }
 
   }

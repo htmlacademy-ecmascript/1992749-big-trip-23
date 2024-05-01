@@ -5,4 +5,3 @@ const pointsModel = new PointsModel();
 const primePresenter = new PrimePresenter({pointsModel});
 
 primePresenter.init();
-
