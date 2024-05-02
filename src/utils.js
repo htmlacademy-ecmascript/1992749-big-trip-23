@@ -6,6 +6,7 @@ const capitalizeLetter = (someString) => someString[0].toUpperCase() + someStrin
 
 const TIME_FORMAT = 'hh:mm'; // Время маршрута отображается в формате начало — окончание (например, «10:30 — 11:00»)
 const FORMAT_DATE_FROM = 'MMM DD'; // Сокращенное название месяца, День месяца, двухзначное число
+const FORMAT_DATE_FOR_FORM_EDIT = 'YY/MM/DD HH:mm'; // 18/03/19 12:25
 // Формат продолжительности нахождения в точке маршрута зависит от длительности:
 const FORMAT_MINUTES = 'mm[M]'; // Менее часа: минуты (например, 23M);
 const FORMAT_ONE_DAY = 'HH[H] mm[M]'; // Менее суток: часы минуты (например, 02H 44M или 12H 00M, если минуты равны нулю);
@@ -26,5 +27,5 @@ const getCorrectFormat = (dateFrom, dateTo) => {
   }
 };
 
-export {capitalizeLetter, humanizeDate, TIME_FORMAT, FORMAT_DATE_FROM, getCorrectFormat};
+export {capitalizeLetter, humanizeDate, TIME_FORMAT, FORMAT_DATE_FROM, FORMAT_DATE_FOR_FORM_EDIT, getCorrectFormat};
 

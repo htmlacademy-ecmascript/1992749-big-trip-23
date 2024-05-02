@@ -1,9 +1,14 @@
 import { createElement } from '../../render';
 import { createEditPointTemplate } from './edit-point-template';
+import { BLANK_POINT } from '../../consts';
 
 export default class EditPointView {
+  constructor({point = BLANK_POINT}) {
+    this.point = point;
+  }
+
   getTemplate() {
-    return createEditPointTemplate();
+    return createEditPointTemplate(this.point);
   }
 
   getElement() {
