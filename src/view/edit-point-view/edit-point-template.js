@@ -1,4 +1,4 @@
-import { capitalizeLetter, humanizeDate, FORMAT_DATE_FOR_FORM_EDIT } from '../../utils';
+import { capitalizeLetter, humanizeDate, TimeFormat} from '../../utils';
 import { namesDestination } from '../../mock/destinations';
 import { POINT_TYPES } from '../../consts';
 
@@ -61,7 +61,8 @@ const getAvailableOffers = () => `
 `;
 
 const getDestinationDescription = () => `
-<p class="event__destination-description">Geneva is a city in Switzerland that lies at the southern tip of expansive Lac Léman (Lake Geneva). Surrounded by the Alps and Jura mountains, the city has views of dramatic Mont Blanc.</p>
+<p class="event__destination-description">Geneva is a city in Switzerland that lies at the southern tip of expansive Lac Léman (Lake Geneva). 
+Surrounded by the Alps and Jura mountains, the city has views of dramatic Mont Blanc.</p>
 `;
 
 const getPhotosContainer = () => `
@@ -104,7 +105,8 @@ const createEditPointTemplate = (point) => {
         <label class="event__label  event__type-output" for="event-destination-1">
           Flight
         </label>
-        <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="Chamonix" list="destination-list-1">
+        <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="Chamonix" 
+        list="destination-list-1">
           <datalist id="destination-list-1">
 
           ${namesDestination.map((item) => `
@@ -116,10 +118,12 @@ const createEditPointTemplate = (point) => {
 
       <div class="event__field-group  event__field-group--time">
         <label class="visually-hidden" for="event-start-time-1">From</label>
-        <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${humanizeDate(dateTo, FORMAT_DATE_FOR_FORM_EDIT)}">
+        <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" 
+        value="${humanizeDate(dateTo, TimeFormat.FORMAT_DATE_FOR_FORM_EDIT)}">
         &mdash;
         <label class="visually-hidden" for="event-end-time-1">To</label>
-        <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${humanizeDate(dateFrom, FORMAT_DATE_FOR_FORM_EDIT)}">
+        <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" 
+        value="${humanizeDate(dateFrom, TimeFormat.FORMAT_DATE_FOR_FORM_EDIT)}">
       </div>
 
       <div class="event__field-group  event__field-group--price">
