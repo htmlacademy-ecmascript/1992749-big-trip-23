@@ -4,81 +4,55 @@ import { POINT_TYPES } from '../../consts';
 
 const isEditingForm = true;
 
-const getPointType = () => POINT_TYPES.map((item) => `
-<div class="event__type-item">
-  <input id="event-type-${item}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${item}">
-  <label class="event__type-label  event__type-label--${item}" for="event-type-${item}-1">${capitalizeLetter(item)}</label>
-</div>
+const getPointType = (type) => POINT_TYPES.map((item) => `
+  <div class="event__type-item">
+    <input id="event-type-${item}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${item}"
+      ${item === type ? 'checked' : ''}>
+    <label class="event__type-label  event__type-label--${item}" for="event-type-${item}-1">${capitalizeLetter(item)}</label>
+  </div>
 `).join('');
 
-const getAvailableOffers = () => `
-<div class="event__available-offers">
-  <div class="event__offer-selector">
-    <input class="event__offer-checkbox  visually-hidden" id="event-offer-luggage-1" type="checkbox" name="event-offer-luggage" checked>
-    <label class="event__offer-label" for="event-offer-luggage-1">
-      <span class="event__offer-title">Add luggage</span>
-      &plus;&euro;&nbsp;
-      <span class="event__offer-price">50</span>
-    </label>
-  </div>
+const getAvailableOffers = (currentOffersForType, type, point) => (currentOffersForType.length > 0) ? `  
+  <h3 class="event__section-title  event__section-title--offers">Offers</h3>
+  <div class="event__available-offers">
+    ${currentOffersForType.map((item) => `
 
   <div class="event__offer-selector">
-    <input class="event__offer-checkbox  visually-hidden" id="event-offer-comfort-1" type="checkbox" name="event-offer-comfort" checked>
-    <label class="event__offer-label" for="event-offer-comfort-1">
-      <span class="event__offer-title">Switch to comfort</span>
+    <input class="event__offer-checkbox  visually-hidden" id="event-offer-${type}-1" type="checkbox" name="event-offer-${type}" 
+    ${point.offers.find((elem) => elem === item.id) ? 'checked' : ''}>
+    <label class="event__offer-label" for="event-offer-${type}-1">
+      <span class="event__offer-title">${item.title}</span>
       &plus;&euro;&nbsp;
-      <span class="event__offer-price">80</span>
+      <span class="event__offer-price">${item.price}</span>
     </label>
   </div>
-
-  <div class="event__offer-selector">
-    <input class="event__offer-checkbox  visually-hidden" id="event-offer-meal-1" type="checkbox" name="event-offer-meal">
-    <label class="event__offer-label" for="event-offer-meal-1">
-      <span class="event__offer-title">Add meal</span>
-      &plus;&euro;&nbsp;
-      <span class="event__offer-price">15</span>
-    </label>
+  
+`).join('')}
   </div>
+` : '';
 
-  <div class="event__offer-selector">
-    <input class="event__offer-checkbox  visually-hidden" id="event-offer-seats-1" type="checkbox" name="event-offer-seats">
-      <label class="event__offer-label" for="event-offer-seats-1">
-      <span class="event__offer-title">Choose seats</span>
-      &plus;&euro;&nbsp;
-      <span class="event__offer-price">5</span>
-    </label>
+const getPhotosContainer = (items) => items.map((item) => `
+  <img class="event__photo" src="${item.src}" alt="${item.description}">
+  `).join('');
+
+const getAvailableDestination = (point, currentDestination) => (
+  currentDestination.pictures.length > 0 || currentDestination.description) ? `
+  <h3 class="event__section-title  event__section-title--destination">Destination</h3>
+
+  <p class="event__destination-description">${currentDestination.description}</p>
+  ${currentDestination.pictures.length > 0 ? `
+  <div class="event__photos-container">
+    <div class="event__photos-tape">
+    ${getPhotosContainer(currentDestination.pictures)}
+    </div>
   </div>
+  ` : ''}
+` : '';
 
-  <div class="event__offer-selector">
-    <input class="event__offer-checkbox  visually-hidden" id="event-offer-train-1" type="checkbox" name="event-offer-train">
-      <label class="event__offer-label" for="event-offer-train-1">
-      <span class="event__offer-title">Travel by train</span>
-      &plus;&euro;&nbsp;
-      <span class="event__offer-price">40</span>
-    </label>
-  </div>
-</div>
-`;
-
-const getDestinationDescription = () => `
-<p class="event__destination-description">Geneva is a city in Switzerland that lies at the southern tip of expansive Lac Léman (Lake Geneva). 
-Surrounded by the Alps and Jura mountains, the city has views of dramatic Mont Blanc.</p>
-`;
-
-const getPhotosContainer = () => `
-<div class="event__photos-container">
-  <div class="event__photos-tape">
-    <img class="event__photo" src="img/photos/1.jpg" alt="Event photo">
-    <img class="event__photo" src="img/photos/2.jpg" alt="Event photo">
-    <img class="event__photo" src="img/photos/3.jpg" alt="Event photo">
-    <img class="event__photo" src="img/photos/4.jpg" alt="Event photo">
-    <img class="event__photo" src="img/photos/5.jpg" alt="Event photo">
-  </div>
-</div>
-`;
-
-const createEditPointTemplate = (point) => {
+const createEditPointTemplate = (point, destinations, offers) => {
   const {basePrice, type, dateFrom, dateTo} = point;
+  const currentDestination = destinations.find((item) => item.id === point.destination);
+  const currentOffersForType = offers.find((item) => item.type === point.type).offers;
 
   return `
 <li class="trip-events__item">
@@ -95,7 +69,7 @@ const createEditPointTemplate = (point) => {
           <fieldset class="event__type-group">
             <legend class="visually-hidden">Event type</legend>
 
-          ${getPointType()}
+          ${getPointType(type)}
 
           </fieldset>
         </div>
@@ -103,10 +77,10 @@ const createEditPointTemplate = (point) => {
 
       <div class="event__field-group  event__field-group--destination">
         <label class="event__label  event__type-output" for="event-destination-1">
-          Flight
+        ${type}
         </label>
-        <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="Chamonix" 
-        list="destination-list-1">
+        <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" 
+        value="${currentDestination.name}" list="destination-list-1">
           <datalist id="destination-list-1">
 
           ${namesDestination.map((item) => `
@@ -142,21 +116,15 @@ const createEditPointTemplate = (point) => {
 
     </header>
     <section class="event__details">
+
         <section class="event__section  event__section--offers">
-          <h3 class="event__section-title  event__section-title--offers">Offers</h3>
-
-          ${getAvailableOffers()}
-
+          ${getAvailableOffers(currentOffersForType, type, point)}
         </section>
 
         <section class="event__section  event__section--destination">
-          <h3 class="event__section-title  event__section-title--destination">Destination</h3>
-
-          ${getDestinationDescription()}
-
-          ${getPhotosContainer()}
-
+          ${getAvailableDestination(point, currentDestination)}
         </section>
+
     </section>
   </form>
 </li>

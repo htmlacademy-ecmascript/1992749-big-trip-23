@@ -17,14 +17,20 @@ export default class PrimePresenter {
 
   init() {
     this.primePoints = [...this.pointsModel.getPoints()];
+    this.primeDestinations = [...this.pointsModel.getDestinations()];
+    this.primeOffers = [...this.pointsModel.getOffers()];
 
     render(new FilterView(), this.filtersContainer);
     render(new SortView(), this.tripEventsContainer);
     render(this.listPointsContainer, this.tripEventsContainer);
-    render(new EditPointView({point: this.primePoints[0]}), this.listPointsContainer.getElement());
+    render(new EditPointView(
+      {point: this.primePoints[10], destinations: this.primeDestinations, offers: this.primeOffers}
+    ), this.listPointsContainer.getElement());
 
     for (let i = 1; i < this.primePoints.length; i++) {
-      render(new PointView({point: this.primePoints[i]}), this.listPointsContainer.getElement());
+      render(new PointView(
+        {point: this.primePoints[i], destinations: this.primeDestinations, offers: this.primeOffers}
+      ), this.listPointsContainer.getElement());
     }
 
   }
