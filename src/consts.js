@@ -10,4 +10,15 @@ const SORTING_OPTIONS = [
   { type: 'offers', checked: true },
 ];
 
-export { POINT_TYPES, FILTER_OPTIONS, SORTING_OPTIONS };
+const BLANK_POINT = {
+  id: '0000',
+  basePrice: 0,
+  dateFrom: null,
+  dateTo: null,
+  destination: null,
+  isFavorite: false,
+  offers: [],
+  type: 'flight'
+};
+
+export { POINT_TYPES, FILTER_OPTIONS, SORTING_OPTIONS, BLANK_POINT };
