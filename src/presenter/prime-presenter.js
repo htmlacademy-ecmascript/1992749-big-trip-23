@@ -1,4 +1,4 @@
-import { render } from '../render';
+import { render } from '../framework/render';
 import FilterView from '../view/filter-view/filter-view';
 import SortView from '../view/sort-view/sort-view';
 import ListPointsView from '../view/list-points-view/list-points-view';
@@ -25,12 +25,12 @@ export default class PrimePresenter {
     render(this.listPointsContainer, this.tripEventsContainer);
     render(new EditPointView(
       {point: this.primePoints[10], destinations: this.primeDestinations, offers: this.primeOffers}
-    ), this.listPointsContainer.getElement());
+    ), this.listPointsContainer.element);
 
     for (let i = 1; i < this.primePoints.length; i++) {
       render(new PointView(
         {point: this.primePoints[i], destinations: this.primeDestinations, offers: this.primeOffers}
-      ), this.listPointsContainer.getElement());
+      ), this.listPointsContainer.element);
     }
 
   }
