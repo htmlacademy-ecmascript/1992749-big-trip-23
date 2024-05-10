@@ -3,8 +3,8 @@ import { createPointTemplate } from './point-template';
 
 export default class PointView extends AbstractView {
   #point = null;
-  #destinations = null;
-  #offers = null;
+  #destinations = [];
+  #offers = [];
 
   #handleEditClick = null;
 

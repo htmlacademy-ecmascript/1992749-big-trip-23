@@ -5,8 +5,8 @@ import AbstractView from '../../framework/view/abstract-view';
 
 export default class EditPointView extends AbstractView {
   #point = null;
-  #destinations = null;
-  #offers = null;
+  #destinations = [];
+  #offers = [];
 
   #handleFormSubmit = null;
   #handleFormRollup = null;
@@ -18,7 +18,7 @@ export default class EditPointView extends AbstractView {
     this.#offers = offers;
 
     this.#handleFormSubmit = onFormSubmit;
-    this.element.querySelector('.event__save-btn').addEventListener('click', this.#formSubmitHandler);
+    this.element.querySelector('form').addEventListener('submit', this.#formSubmitHandler);
     this.#handleFormRollup = onFormRollup;
     this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#formRollupHandler);
   }
