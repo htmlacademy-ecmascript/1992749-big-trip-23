@@ -1,4 +1,4 @@
-import { createElement } from '../../render';
+import AbstractView from '../../framework/view/abstract-view';
 
 const createPageHeaderTemplate = () => `
   <header class="page-header">
@@ -21,20 +21,9 @@ const createPageHeaderTemplate = () => `
 </header>
   `;
 
-export default class PageHeaderView {
-  getTemplate() {
+export default class PageHeaderView extends AbstractView {
+
+  get template() {
     return createPageHeaderTemplate();
-  }
-
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
-    }
-
-    return this.element;
-  }
-
-  removeElement() {
-    this.element = null;
   }
 }

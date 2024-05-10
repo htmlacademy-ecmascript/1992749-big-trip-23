@@ -1,27 +1,39 @@
-import { createElement } from '../../render';
+
 import { createEditPointTemplate } from './edit-point-template';
 import { BLANK_POINT } from '../../consts';
+import AbstractView from '../../framework/view/abstract-view';
 
-export default class EditPointView {
-  constructor({point = BLANK_POINT, destinations, offers}) {
-    this.point = point;
-    this.destinations = destinations;
-    this.offers = offers;
+export default class EditPointView extends AbstractView {
+  #point = null;
+  #destinations = [];
+  #offers = [];
+
+  #handleFormSubmit = null;
+  #handleFormRollup = null;
+
+  constructor({point = BLANK_POINT, destinations, offers, onFormSubmit, onFormRollup}) {
+    super();
+    this.#point = point;
+    this.#destinations = destinations;
+    this.#offers = offers;
+
+    this.#handleFormSubmit = onFormSubmit;
+    this.element.querySelector('form').addEventListener('submit', this.#formSubmitHandler);
+    this.#handleFormRollup = onFormRollup;
+    this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#formRollupHandler);
   }
 
-  getTemplate() {
-    return createEditPointTemplate(this.point, this.destinations, this.offers);
+  get template() {
+    return createEditPointTemplate(this.#point, this.#destinations, this.#offers);
   }
 
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
-    }
+  #formSubmitHandler = (evt) => {
+    evt.preventDefault();
+    this.#handleFormSubmit();
+  };
 
-    return this.element;
-  }
-
-  removeElement() {
-    this.element = null;
-  }
+  #formRollupHandler = (evt) => {
+    evt.preventDefault();
+    this.#handleFormRollup();
+  };
 }
