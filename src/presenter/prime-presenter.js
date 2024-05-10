@@ -4,6 +4,7 @@ import SortView from '../view/sort-view/sort-view';
 import ListPointsView from '../view/list-points-view/list-points-view';
 import EditPointView from '../view/edit-point-view/edit-point-view';
 import PointView from '../view/point-view/point-view';
+import EmptyView from '../view/empty-view/empty-view';
 
 export default class PrimePresenter {
   #filtersContainer = null;
@@ -28,7 +29,7 @@ export default class PrimePresenter {
     this.#primeDestinations = [...this.#pointsModel.destinations];
     this.#primeOffers = [...this.#pointsModel.offers];
 
-    this.#renderBoard();
+    this.#renderTrip();
   }
 
   #renderPoint(point) {
@@ -74,8 +75,14 @@ export default class PrimePresenter {
     render(pointComponent, this.#listPointsContainer.element);
   }
 
-  #renderBoard() {
+  #renderTrip() {
     render(new FilterView(), this.#filtersContainer);
+
+    if (this.#primePoints.length <= 0) {
+      render(new EmptyView(), this.#tripEventsContainer);
+      return;
+    }
+
     render(new SortView(), this.#tripEventsContainer);
     render(this.#listPointsContainer, this.#tripEventsContainer);
 
