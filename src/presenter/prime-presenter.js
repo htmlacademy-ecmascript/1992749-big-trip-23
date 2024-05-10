@@ -28,13 +28,7 @@ export default class PrimePresenter {
     this.#primeDestinations = [...this.#pointsModel.destinations];
     this.#primeOffers = [...this.#pointsModel.offers];
 
-    render(new FilterView(), this.#filtersContainer);
-    render(new SortView(), this.#tripEventsContainer);
-    render(this.#listPointsContainer, this.#tripEventsContainer);
-
-    for (let i = 0; i < this.#primePoints.length; i++) {
-      this.#renderPoint(this.#primePoints[i]);
-    }
+    this.#renderBoard();
   }
 
   #renderPoint(point) {
@@ -78,5 +72,15 @@ export default class PrimePresenter {
     }
 
     render(pointComponent, this.#listPointsContainer.element);
+  }
+
+  #renderBoard() {
+    render(new FilterView(), this.#filtersContainer);
+    render(new SortView(), this.#tripEventsContainer);
+    render(this.#listPointsContainer, this.#tripEventsContainer);
+
+    for (let i = 0; i < this.#primePoints.length; i++) {
+      this.#renderPoint(this.#primePoints[i]);
+    }
   }
 }
