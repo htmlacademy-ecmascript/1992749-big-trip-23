@@ -31,9 +31,6 @@ export default class PrimePresenter {
     render(new FilterView(), this.#filtersContainer);
     render(new SortView(), this.#tripEventsContainer);
     render(this.#listPointsContainer, this.#tripEventsContainer);
-    // render(new EditPointView(
-    //   {point: this.#primePoints[10], destinations: this.#primeDestinations, offers: this.#primeOffers}
-    // ), this.#listPointsContainer.element);
 
     for (let i = 0; i < this.#primePoints.length; i++) {
       this.#renderPoint(this.#primePoints[i]);
@@ -62,6 +59,10 @@ export default class PrimePresenter {
     const editPointComponent = new EditPointView(
       {point: this.#primePoints[10], destinations: this.#primeDestinations, offers: this.#primeOffers,
         onFormSubmit: () => {
+          replaceFormToPoint();
+          document.removeEventListener('keydown', escKeyDownHandler);
+        },
+        onFormRollup: () => {
           replaceFormToPoint();
           document.removeEventListener('keydown', escKeyDownHandler);
         }
