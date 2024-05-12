@@ -19,11 +19,11 @@ const filter = {
   [FilterType.PAST]: (points) => points.filter((point) => isPointPast(point)),
 };
 
-const generateFilter = (points) => Object.entries(filter).map(
+const generateFilters = (points) => Object.entries(filter).map(
   ([filterType, filterPoints]) => ({
     type: filterType,
     hasPoints: filterPoints(points).length > 0,
   }),
 );
 
-export {generateFilter};
+export {generateFilters};

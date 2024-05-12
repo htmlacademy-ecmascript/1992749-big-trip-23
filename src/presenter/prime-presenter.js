@@ -1,5 +1,5 @@
 import { render, replace } from '../framework/render';
-import { generateFilter } from '../utils/filter-utils';
+import { generateFilters } from '../utils/filter-utils';
 import FilterView from '../view/filter-view/filter-view';
 import SortView from '../view/sort-view/sort-view';
 import ListPointsView from '../view/list-points-view/list-points-view';
@@ -53,7 +53,7 @@ export default class PrimePresenter {
     );
 
     const editPointComponent = new EditPointView(
-      {point: this.#primePoints[10], destinations: this.#primeDestinations, offers: this.#primeOffers,
+      {point, destinations: this.#primeDestinations, offers: this.#primeOffers,
         onFormSubmit: () => {
           replaceFormToPoint();
           document.removeEventListener('keydown', escKeyDownHandler);
@@ -77,7 +77,7 @@ export default class PrimePresenter {
   }
 
   #renderFilters() {
-    const filters = generateFilter(this.#primePoints);
+    const filters = generateFilters(this.#primePoints);
     render(new FilterView(filters), this.#filtersContainer);
   }
 
