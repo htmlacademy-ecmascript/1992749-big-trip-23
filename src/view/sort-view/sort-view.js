@@ -1,4 +1,4 @@
-import { capitalizeLetter } from '../../utils';
+import { capitalizeLetter } from '../../utils/common-utils.js';
 import { SORTING_OPTIONS } from '../../consts';
 import AbstractView from '../../framework/view/abstract-view';
 
