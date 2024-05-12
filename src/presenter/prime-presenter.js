@@ -1,4 +1,5 @@
 import { render, replace } from '../framework/render';
+import { generateFilter } from '../utils/filter-utils';
 import FilterView from '../view/filter-view/filter-view';
 import SortView from '../view/sort-view/sort-view';
 import ListPointsView from '../view/list-points-view/list-points-view';
@@ -75,8 +76,13 @@ export default class PrimePresenter {
     render(pointComponent, this.#listPointsContainer.element);
   }
 
+  #renderFilters() {
+    const filters = generateFilter(this.#primePoints);
+    render(new FilterView(filters), this.#filtersContainer);
+  }
+
   #renderTrip() {
-    render(new FilterView(), this.#filtersContainer);
+    this.#renderFilters();
 
     if (this.#primePoints.length <= 0) {
       render(new EmptyView(), this.#tripEventsContainer);

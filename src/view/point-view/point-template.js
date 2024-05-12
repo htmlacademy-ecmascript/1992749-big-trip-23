@@ -1,4 +1,5 @@
-import { humanizeDate, getCorrectFormat, TimeFormat, capitalizeLetter } from '../../utils';
+import { humanizeDate, getCorrectFormat, TimeFormat } from '../../utils/point-utils';
+import { capitalizeLetter } from '../../utils/common-utils';
 
 const selectedOffers = (pointOffers, currentOffersForType) => (pointOffers.length > 0) ? `
   <h4 class="visually-hidden">Offers:</h4>
@@ -21,7 +22,7 @@ const createPointTemplate = (point, destinations, offers) => {
   return `
  <li class="trip-events__item">
   <div class="event">
-    <time class="event__date" datetime="${dateFrom}">${humanizeDate(dateFrom, TimeFormat.SIMPLE_TIME_FORMAT)}</time>
+    <time class="event__date" datetime="${dateFrom}">${humanizeDate(dateFrom, TimeFormat.FORMAT_DATE_FROM)}</time>
     <div class="event__type">
       <img class="event__type-icon" width="42" height="42" src="img/icons/${type}.png" alt="Event type icon">
     </div>

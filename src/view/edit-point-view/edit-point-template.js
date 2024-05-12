@@ -1,4 +1,5 @@
-import { capitalizeLetter, humanizeDate, TimeFormat} from '../../utils';
+import { humanizeDate, TimeFormat} from '../../utils/point-utils';
+import { capitalizeLetter } from '../../utils/common-utils';
 import { namesDestination } from '../../mock/destinations';
 import { POINT_TYPES } from '../../consts';
 

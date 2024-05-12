@@ -17,8 +17,6 @@ const TimeInMilliseconds = {
   DAY: 86400000,
 };
 
-const capitalizeLetter = (someString) => someString[0].toUpperCase() + someString.slice(1);
-
 const humanizeDate = (date, formatDate) => date ? dayjs(date).format(formatDate) : '';
 
 const getCorrectFormat = (dateFrom, dateTo) => {
@@ -34,5 +32,5 @@ const getCorrectFormat = (dateFrom, dateTo) => {
   }
 };
 
-export {capitalizeLetter, humanizeDate, getCorrectFormat, TimeFormat};
+export { humanizeDate, getCorrectFormat, TimeFormat};
 
