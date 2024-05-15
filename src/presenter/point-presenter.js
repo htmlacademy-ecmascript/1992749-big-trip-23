@@ -1,4 +1,4 @@
-import { render, replace } from '../framework/render';
+import { remove, render, replace } from '../framework/render';
 import PointView from '../view/point-view/point-view';
 import EditPointView from '../view/edit-point-view/edit-point-view';
 
@@ -13,6 +13,9 @@ export default class PointPresenter {
   }
 
   init ({point, destinations, offers}) {
+
+    const prevPointComponent = this.#pointComponent;
+    const prevEditPointComponent = this.#editPointComponent;
 
     this.#pointComponent = new PointView(
       {point, destinations, offers,
@@ -36,7 +39,26 @@ export default class PointPresenter {
       }
     );
 
-    render(this.#pointComponent, this.#listPointsContainer);
+    if (prevPointComponent === null || prevEditPointComponent === null) {
+      render(this.#pointComponent, this.#listPointsContainer);
+      return;
+    }
+
+    if (this.#listPointsContainer.contains(prevPointComponent.element)) {
+      replace(this.#pointComponent, prevPointComponent);
+    }
+
+    if (this.#listPointsContainer.contains(prevEditPointComponent.element)) {
+      replace(this.#editPointComponent, prevEditPointComponent);
+    }
+
+    remove(prevPointComponent);
+    remove(prevEditPointComponent);
+  }
+
+  destroy() {
+    remove(this.#pointComponent);
+    remove(this.#editPointComponent);
   }
 
   #escKeyDownHandler = (evt) => {
