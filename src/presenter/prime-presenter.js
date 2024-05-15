@@ -1,11 +1,10 @@
-import { render, replace } from '../framework/render';
+import { render } from '../framework/render';
 import { generateFilters } from '../utils/filter-utils';
 import FilterView from '../view/filter-view/filter-view';
 import SortView from '../view/sort-view/sort-view';
 import ListPointsView from '../view/list-points-view/list-points-view';
-import EditPointView from '../view/edit-point-view/edit-point-view';
-import PointView from '../view/point-view/point-view';
 import EmptyView from '../view/empty-view/empty-view';
+import PointPresenter from './point-presenter';
 
 export default class PrimePresenter {
   #filtersContainer = null;
@@ -34,46 +33,10 @@ export default class PrimePresenter {
   }
 
   #renderPoint(point) {
-
-    const escKeyDownHandler = (evt) => {
-      if (evt.key === 'Escape') {
-        evt.preventDefault();
-        replaceFormToPoint();
-        document.removeEventListener('keydown', escKeyDownHandler);
-      }
-    };
-
-    const pointComponent = new PointView(
-      {point, destinations: this.#primeDestinations, offers: this.#primeOffers,
-        onEditClick: () => {
-          replacePointToForm();
-          document.addEventListener('keydown', escKeyDownHandler);
-        }
-      }
+    const pointPresenter = new PointPresenter(
+      {listPointsContainer: this.#listPointsContainer.element}
     );
-
-    const editPointComponent = new EditPointView(
-      {point, destinations: this.#primeDestinations, offers: this.#primeOffers,
-        onFormSubmit: () => {
-          replaceFormToPoint();
-          document.removeEventListener('keydown', escKeyDownHandler);
-        },
-        onFormRollup: () => {
-          replaceFormToPoint();
-          document.removeEventListener('keydown', escKeyDownHandler);
-        }
-      }
-    );
-
-    function replacePointToForm() {
-      replace(editPointComponent, pointComponent);
-    }
-
-    function replaceFormToPoint() {
-      replace(pointComponent, editPointComponent);
-    }
-
-    render(pointComponent, this.#listPointsContainer.element);
+    pointPresenter.init({point, destinations: this.#primeDestinations, offers: this.#primeOffers});
   }
 
   #renderFilters() {
