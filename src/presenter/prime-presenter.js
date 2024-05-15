@@ -17,6 +17,8 @@ export default class PrimePresenter {
   #primeDestinations = [];
   #primeOffers = [];
 
+  #pointPresenters = new Map();
+
   constructor({pointsModel}) {
     this.#filtersContainer = document.querySelector('.trip-controls__filters');
     this.#tripEventsContainer = document.querySelector('.trip-events');
@@ -37,6 +39,12 @@ export default class PrimePresenter {
       {listPointsContainer: this.#listPointsContainer.element}
     );
     pointPresenter.init({point, destinations: this.#primeDestinations, offers: this.#primeOffers});
+    this.#pointPresenters.set(point.id, pointPresenter);
+  }
+
+  #clearPointList() {
+    this.#pointPresenters.forEach((presenter) => presenter.destroy());
+    this.#pointPresenters.clear();
   }
 
   #renderFilters() {
