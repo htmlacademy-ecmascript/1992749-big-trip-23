@@ -5,6 +5,7 @@ import SortView from '../view/sort-view/sort-view';
 import ListPointsView from '../view/list-points-view/list-points-view';
 import EmptyView from '../view/empty-view/empty-view';
 import PointPresenter from './point-presenter';
+import { updateItem } from '../utils/common-utils';
 
 export default class PrimePresenter {
   #filtersContainer = null;
@@ -41,6 +42,11 @@ export default class PrimePresenter {
     pointPresenter.init({point, destinations: this.#primeDestinations, offers: this.#primeOffers});
     this.#pointPresenters.set(point.id, pointPresenter);
   }
+
+  #handlePointChange = (updatedPoint) => {
+    this.#primePoints = updateItem(this.#primePoints, updatedPoint);
+    this.#pointPresenters.get(updatedPoint.id).init(updatedPoint);
+  };
 
   #clearPointList() {
     this.#pointPresenters.forEach((presenter) => presenter.destroy());
