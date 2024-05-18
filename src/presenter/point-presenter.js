@@ -4,38 +4,36 @@ import EditPointView from '../view/edit-point-view/edit-point-view';
 
 export default class PointPresenter {
   #listPointsContainer = null;
+  #handleDataChange = null;
 
   #pointComponent = null;
   #editPointComponent = null;
 
-  constructor ({listPointsContainer}) {
+  #point = null;
+
+  constructor ({listPointsContainer, onDataChange}) {
     this.#listPointsContainer = listPointsContainer;
+    this.#handleDataChange = onDataChange;
   }
 
-  init ({point, destinations, offers}) {
-
+  init ({point, destinations, offers}) { //console.log('До', this.#point)
+    this.#point = point; // Здесь после повторного init() this.#point имеет ЗНАЧЕНИЕ, а point при повторе всегда undefined,
+    // поэтому this.#point переписывается на undefined и везде далее уходит undefined
+    //console.log('После', this.#point)
     const prevPointComponent = this.#pointComponent;
     const prevEditPointComponent = this.#editPointComponent;
 
     this.#pointComponent = new PointView(
-      {point, destinations, offers,
-        onEditClick: () => {
-          this.#replacePointToForm();
-          document.addEventListener('keydown', this.#escKeyDownHandler);
-        }
+      {point: this.#point, destinations, offers,
+        onEditClick: this.#handleEditClick,
+        onFavoriteClick: this.#handleFavoriteClick,
       }
     );
 
     this.#editPointComponent = new EditPointView(
-      {point, destinations, offers,
-        onFormSubmit: () => {
-          this.#replaceFormToPoint();
-          document.removeEventListener('keydown', this.#escKeyDownHandler);
-        },
-        onFormRollup: () => {
-          this.#replaceFormToPoint();
-          document.removeEventListener('keydown', this.#escKeyDownHandler);
-        }
+      {point: this.#point, destinations, offers,
+        onFormSubmit: this.#handleFormSubmit,
+        onFormRollup: this.#handleFormRollup,
       }
     );
 
@@ -61,6 +59,16 @@ export default class PointPresenter {
     remove(this.#editPointComponent);
   }
 
+  #replacePointToForm() {
+    replace(this.#editPointComponent, this.#pointComponent);
+    document.addEventListener('keydown', this.#escKeyDownHandler);
+  }
+
+  #replaceFormToPoint() {
+    replace(this.#pointComponent, this.#editPointComponent);
+    document.removeEventListener('keydown', this.#escKeyDownHandler);
+  }
+
   #escKeyDownHandler = (evt) => {
     if (evt.key === 'Escape') {
       evt.preventDefault();
@@ -69,11 +77,20 @@ export default class PointPresenter {
     }
   };
 
-  #replacePointToForm() {
-    replace(this.#editPointComponent, this.#pointComponent);
-  }
+  #handleEditClick = () => {
+    this.#replacePointToForm();
+  };
 
-  #replaceFormToPoint() {
-    replace(this.#pointComponent, this.#editPointComponent);
-  }
+  #handleFavoriteClick = () => {
+    this.#handleDataChange({...this.#point, isFavorite: !this.#point.isFavorite});
+  };
+
+  #handleFormSubmit = (point) => {
+    this.#handleDataChange(point);
+    this.#replaceFormToPoint();
+  };
+
+  #handleFormRollup = () => {
+    this.#replaceFormToPoint();
+  };
 }

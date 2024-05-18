@@ -36,17 +36,19 @@ export default class PrimePresenter {
   }
 
   #renderPoint(point) {
-    const pointPresenter = new PointPresenter(
-      {listPointsContainer: this.#listPointsContainer.element}
-    );
+    const pointPresenter = new PointPresenter({
+      listPointsContainer: this.#listPointsContainer.element,
+      onDataChange: this.#handlePointChange,
+    });
     pointPresenter.init({point, destinations: this.#primeDestinations, offers: this.#primeOffers});
     this.#pointPresenters.set(point.id, pointPresenter);
   }
 
   #handlePointChange = (updatedPoint) => {
-    this.#primePoints = updateItem(this.#primePoints, updatedPoint);
-    this.#pointPresenters.get(updatedPoint.id).init(updatedPoint);
-  };
+    this.#primePoints = updateItem(this.#primePoints, updatedPoint); //this.#primePoints в порядке: после клика isFavorite:  ОБНОВЛЯЕТСЯ
+    //console.log('pointPresenters.get', this.#pointPresenters.get('c194fe78-d08f-4a0d-9e82-d3b25a1c555a'));
+    this.#pointPresenters.get(updatedPoint.id).init(updatedPoint); //Метод поиска по updatedPoint.id работает и в init(updatedPoint) приходит правильная точка
+  }; // здесь отладчик переходит в pointPresenter.init()
 
   #clearPointList() {
     this.#pointPresenters.forEach((presenter) => presenter.destroy());
