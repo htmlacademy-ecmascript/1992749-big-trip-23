@@ -16,22 +16,21 @@ export default class PointPresenter {
     this.#handleDataChange = onDataChange;
   }
 
-  init ({point, destinations, offers}) { //console.log('До', this.#point)
-    this.#point = point; // Здесь после повторного init() this.#point имеет ЗНАЧЕНИЕ, а point при повторе всегда undefined,
-    // поэтому this.#point переписывается на undefined и везде далее уходит undefined
-    //console.log('После', this.#point)
+  init ({point, destinations, offers}) {
+    this.#point = point;
+
     const prevPointComponent = this.#pointComponent;
     const prevEditPointComponent = this.#editPointComponent;
 
     this.#pointComponent = new PointView(
-      {point: this.#point, destinations, offers,
+      {point, destinations, offers,
         onEditClick: this.#handleEditClick,
         onFavoriteClick: this.#handleFavoriteClick,
       }
     );
 
     this.#editPointComponent = new EditPointView(
-      {point: this.#point, destinations, offers,
+      {point, destinations, offers,
         onFormSubmit: this.#handleFormSubmit,
         onFormRollup: this.#handleFormRollup,
       }
