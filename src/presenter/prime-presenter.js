@@ -39,10 +39,15 @@ export default class PrimePresenter {
     const pointPresenter = new PointPresenter({
       listPointsContainer: this.#listPointsContainer.element,
       onDataChange: this.#handlePointChange,
+      onModeChange: this.#handleModeChange,
     });
     pointPresenter.init({point, destinations: this.#primeDestinations, offers: this.#primeOffers});
     this.#pointPresenters.set(point.id, pointPresenter);
   }
+
+  #handleModeChange = () => {
+    this.#pointPresenters.forEach((presenter) => presenter.resetView());
+  };
 
   #handlePointChange = (updatedPoint) => {
     this.#primePoints = updateItem(this.#primePoints, updatedPoint);
