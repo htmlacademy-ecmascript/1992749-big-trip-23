@@ -10,7 +10,7 @@ import { updateItem } from '../utils/common-utils';
 export default class PrimePresenter {
   #filtersContainer = null;
   #tripEventsContainer = null;
-
+  #sortComponent = null;
   #listPointsContainer = new ListPointsView();
   #pointsModel = [];
 
@@ -64,6 +64,20 @@ export default class PrimePresenter {
     render(new FilterView(filters), this.#filtersContainer);
   }
 
+  #handleSortTypeChange = () => {
+    // sortType - параметр
+    // - Сортируем задачи
+    // - Очищаем список
+    // - Рендерим список заново
+  };
+
+  #renderSort() {
+    this.#sortComponent = new SortView({
+      onSortTypeChange: this.#handleSortTypeChange
+    });
+    render(this.#sortComponent, this.#tripEventsContainer);
+  }
+
   #renderTrip() {
     this.#renderFilters();
 
@@ -72,7 +86,7 @@ export default class PrimePresenter {
       return;
     }
 
-    render(new SortView(), this.#tripEventsContainer);
+    this.#renderSort();
     render(this.#listPointsContainer, this.#tripEventsContainer);
 
     for (let i = 0; i < this.#primePoints.length; i++) {
