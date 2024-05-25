@@ -6,13 +6,13 @@ import AbstractView from '../../framework/view/abstract-view';
 const createSortTemplate = () => `
     <form class="trip-events__trip-sort  trip-sort" action="#" method="get">
 
-    ${SortType.map((item) => `
-      <div class="trip-sort__item  trip-sort__item--${item.type}">
-        <input id="sort-${item.type}"
-        class="trip-sort__input  visually-hidden" type="radio" name="trip-sort" value="sort-${item.type}"
-        ${item.checked ? 'disabled' : ''} data-sort-type="${item.type}"
+    ${Object.values(SortType).map((item) => `
+      <div class="trip-sort__item  trip-sort__item--${item}">
+        <input id="sort-${item}"
+        class="trip-sort__input  visually-hidden" type="radio" name="trip-sort" value="sort-${item}"
+         data-sort-type="${item}" ${item === 'event' || item === 'offers' ? 'disabled' : ''}
         >
-        <label class="trip-sort__btn" for="sort-${item.type}">${capitalizeLetter(item.type)}</label>
+        <label class="trip-sort__btn" for="sort-${item}">${capitalizeLetter(item)}</label>
       </div>
       `).join('')}
 

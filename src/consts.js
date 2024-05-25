@@ -1,13 +1,5 @@
 const POINT_TYPES = ['taxi', 'bus', 'train', 'ship', 'drive', 'flight', 'check-in', 'sightseeing', 'restaurant'];
 
-const SortType = [
-  { type: 'day' },
-  { type: 'event', checked: true },
-  { type: 'time' },
-  { type: 'price' },
-  { type: 'offers', checked: true },
-];
-
 const BLANK_POINT = {
   id: '0000',
   basePrice: 0,
@@ -24,6 +16,14 @@ const FilterType = {
   FUTURE: 'future',
   PRESENT: 'present',
   PAST: 'past',
+};
+
+const SortType = {
+  DAY: 'day',
+  EVENT: 'event',
+  PRICE: 'price',
+  TIME: 'time',
+  OFFERS: 'offers',
 };
 
 export { POINT_TYPES, BLANK_POINT, FilterType, SortType };
