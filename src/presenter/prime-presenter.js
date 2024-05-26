@@ -6,11 +6,13 @@ import ListPointsView from '../view/list-points-view/list-points-view';
 import EmptyView from '../view/empty-view/empty-view';
 import PointPresenter from './point-presenter';
 import { updateItem } from '../utils/common-utils';
+import { SortType } from '../consts';
+import { sortPointDay, sortPointPrice, sortPointTime } from '../utils/point-utils';
 
 export default class PrimePresenter {
   #filtersContainer = null;
   #tripEventsContainer = null;
-
+  #sortComponent = null;
   #listPointsContainer = new ListPointsView();
   #pointsModel = [];
 
@@ -19,6 +21,8 @@ export default class PrimePresenter {
   #primeOffers = [];
 
   #pointPresenters = new Map();
+  #currentSortType = SortType.DAY;
+  #sourcedPrimePoints = [];
 
   constructor({pointsModel}) {
     this.#filtersContainer = document.querySelector('.trip-controls__filters');
@@ -29,6 +33,8 @@ export default class PrimePresenter {
 
   init() {
     this.#primePoints = [...this.#pointsModel.points];
+    this.#sourcedPrimePoints = [...this.#pointsModel.points];
+
     this.#primeDestinations = [...this.#pointsModel.destinations];
     this.#primeOffers = [...this.#pointsModel.offers];
 
@@ -51,8 +57,50 @@ export default class PrimePresenter {
 
   #handlePointChange = (updatedPoint) => {
     this.#primePoints = updateItem(this.#primePoints, updatedPoint);
+    this.#sourcedPrimePoints = updateItem(this.#sourcedPrimePoints, updatedPoint);
+
     this.#pointPresenters.get(updatedPoint.id).init({point: updatedPoint, destinations: this.#primeDestinations, offers: this.#primeOffers});
   };
+
+  #sortPoints(sortType) {
+
+    switch (sortType) {
+      case SortType.TIME:
+        this.#primePoints.sort(sortPointTime);
+        break;
+      case SortType.PRICE:
+        this.#primePoints.sort(sortPointPrice);
+        break;
+      case SortType.DAY:
+        this.#primePoints.sort(sortPointDay);
+        break;
+    }
+
+    this.#currentSortType = sortType;
+  }
+
+  #handleSortTypeChange = (sortType) => {
+    if (this.#currentSortType === sortType) {
+      return;
+    }
+
+    this.#sortPoints(sortType);
+    this.#clearPointList();
+    this.#renderPointList();
+  };
+
+  #renderSort() {
+    this.#sortComponent = new SortView({
+      onSortTypeChange: this.#handleSortTypeChange
+    });
+    render(this.#sortComponent, this.#tripEventsContainer);
+  }
+
+  #renderPointList() {
+    for (let i = 0; i < this.#primePoints.length; i++) {
+      this.#renderPoint(this.#primePoints[i]);
+    }
+  }
 
   #clearPointList() {
     this.#pointPresenters.forEach((presenter) => presenter.destroy());
@@ -72,11 +120,9 @@ export default class PrimePresenter {
       return;
     }
 
-    render(new SortView(), this.#tripEventsContainer);
+    this.#renderSort();
     render(this.#listPointsContainer, this.#tripEventsContainer);
 
-    for (let i = 0; i < this.#primePoints.length; i++) {
-      this.#renderPoint(this.#primePoints[i]);
-    }
+    this.#renderPointList();
   }
 }
