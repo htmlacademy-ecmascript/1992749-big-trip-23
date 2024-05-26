@@ -6,6 +6,8 @@ import ListPointsView from '../view/list-points-view/list-points-view';
 import EmptyView from '../view/empty-view/empty-view';
 import PointPresenter from './point-presenter';
 import { updateItem } from '../utils/common-utils';
+import { SortType } from '../consts';
+import { sortPointDay, sortPointPrice, sortPointTime } from '../utils/point-utils';
 
 export default class PrimePresenter {
   #filtersContainer = null;
@@ -19,6 +21,8 @@ export default class PrimePresenter {
   #primeOffers = [];
 
   #pointPresenters = new Map();
+  #currentSortType = SortType.DAY;
+  #sourcedPrimePoints = [];
 
   constructor({pointsModel}) {
     this.#filtersContainer = document.querySelector('.trip-controls__filters');
@@ -29,6 +33,8 @@ export default class PrimePresenter {
 
   init() {
     this.#primePoints = [...this.#pointsModel.points];
+    this.#sourcedPrimePoints = [...this.#pointsModel.points];
+
     this.#primeDestinations = [...this.#pointsModel.destinations];
     this.#primeOffers = [...this.#pointsModel.offers];
 
@@ -51,22 +57,40 @@ export default class PrimePresenter {
 
   #handlePointChange = (updatedPoint) => {
     this.#primePoints = updateItem(this.#primePoints, updatedPoint);
+    this.#sourcedPrimePoints = updateItem(this.#sourcedPrimePoints, updatedPoint);
+
     this.#pointPresenters.get(updatedPoint.id).init({point: updatedPoint, destinations: this.#primeDestinations, offers: this.#primeOffers});
   };
 
-  #clearPointList() {
-    this.#pointPresenters.forEach((presenter) => presenter.destroy());
-    this.#pointPresenters.clear();
+  #sortPoints(sortType) {
+    // 2. Этот исходный массив задач необходим,
+    // потому что для сортировки мы будем мутировать
+    // массив в свойстве _boardTasks
+    switch (sortType) {
+      case SortType.TIME:
+        this.#primePoints.sort(sortPointTime);
+        break;
+      case SortType.PRICE:
+        this.#primePoints.sort(sortPointPrice);
+        break;
+      case SortType.DAY:
+        this.#primePoints.sort(sortPointDay);
+        break;
+      // default:
+      //   // 3. А когда пользователь захочет "вернуть всё, как было",
+      //   // мы просто запишем в _boardTasks исходный массив
+      //   this.#primePoints = [...this.#sourcedPrimePoints];
+    }
+
+    this.#currentSortType = sortType;
   }
 
-  #renderFilters() {
-    const filters = generateFilters(this.#primePoints);
-    render(new FilterView(filters), this.#filtersContainer);
-  }
+  #handleSortTypeChange = (sortType) => {
+    if (this.#currentSortType === sortType) {
+      return;
+    }
 
-  #handleSortTypeChange = () => {
-    // sortType - параметр
-    // - Сортируем задачи
+    this.#sortPoints(sortType);
     // - Очищаем список
     // - Рендерим список заново
   };
@@ -76,6 +100,16 @@ export default class PrimePresenter {
       onSortTypeChange: this.#handleSortTypeChange
     });
     render(this.#sortComponent, this.#tripEventsContainer);
+  }
+
+  #clearPointList() {
+    this.#pointPresenters.forEach((presenter) => presenter.destroy());
+    this.#pointPresenters.clear();
+  }
+
+  #renderFilters() {
+    const filters = generateFilters(this.#primePoints);
+    render(new FilterView(filters), this.#filtersContainer);
   }
 
   #renderTrip() {

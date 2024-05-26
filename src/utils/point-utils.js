@@ -32,5 +32,21 @@ const getCorrectFormat = (dateFrom, dateTo) => {
   }
 };
 
-export { humanizeDate, getCorrectFormat, TimeFormat};
+const sortPointPrice = (pointA, pointB) => pointB.basePrice - pointA.basePrice;
+
+const sortPointTime = (pointA, pointB) => {
+  const eventDurationPointA = dayjs(pointA.dateTo).diff(pointA.dateFrom);
+  const eventDurationPointB = dayjs(pointB.dateTo).diff(pointB.dateFrom);
+
+  return eventDurationPointB - eventDurationPointA;
+};
+
+const sortPointDay = (pointA, pointB) => {
+  const datePointA = new Date(pointA.dateFrom);
+  const datePointB = new Date(pointB.dateFrom);
+
+  return datePointA - datePointB;
+};
+
+export { humanizeDate, getCorrectFormat, TimeFormat, sortPointDay, sortPointPrice, sortPointTime};
 
