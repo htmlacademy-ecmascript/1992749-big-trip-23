@@ -21,8 +21,8 @@ const FilterType = {
 const SortType = {
   DAY: 'day',
   EVENT: 'event',
-  PRICE: 'price',
   TIME: 'time',
+  PRICE: 'price',
   OFFERS: 'offers',
 };
 

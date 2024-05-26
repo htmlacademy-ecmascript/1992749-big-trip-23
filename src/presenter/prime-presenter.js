@@ -63,9 +63,7 @@ export default class PrimePresenter {
   };
 
   #sortPoints(sortType) {
-    // 2. Этот исходный массив задач необходим,
-    // потому что для сортировки мы будем мутировать
-    // массив в свойстве _boardTasks
+
     switch (sortType) {
       case SortType.TIME:
         this.#primePoints.sort(sortPointTime);
@@ -76,10 +74,6 @@ export default class PrimePresenter {
       case SortType.DAY:
         this.#primePoints.sort(sortPointDay);
         break;
-      // default:
-      //   // 3. А когда пользователь захочет "вернуть всё, как было",
-      //   // мы просто запишем в _boardTasks исходный массив
-      //   this.#primePoints = [...this.#sourcedPrimePoints];
     }
 
     this.#currentSortType = sortType;
@@ -91,8 +85,8 @@ export default class PrimePresenter {
     }
 
     this.#sortPoints(sortType);
-    // - Очищаем список
-    // - Рендерим список заново
+    this.#clearPointList();
+    this.#renderPointList();
   };
 
   #renderSort() {
@@ -100,6 +94,12 @@ export default class PrimePresenter {
       onSortTypeChange: this.#handleSortTypeChange
     });
     render(this.#sortComponent, this.#tripEventsContainer);
+  }
+
+  #renderPointList() {
+    for (let i = 0; i < this.#primePoints.length; i++) {
+      this.#renderPoint(this.#primePoints[i]);
+    }
   }
 
   #clearPointList() {
@@ -123,8 +123,6 @@ export default class PrimePresenter {
     this.#renderSort();
     render(this.#listPointsContainer, this.#tripEventsContainer);
 
-    for (let i = 0; i < this.#primePoints.length; i++) {
-      this.#renderPoint(this.#primePoints[i]);
-    }
+    this.#renderPointList();
   }
 }
