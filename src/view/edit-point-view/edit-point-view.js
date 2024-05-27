@@ -1,10 +1,10 @@
 
 import { createEditPointTemplate } from './edit-point-template';
 import { BLANK_POINT } from '../../consts';
-import AbstractView from '../../framework/view/abstract-view';
+import AbstractStatefulView from '../../framework/view/abstract-stateful-view';
 
-export default class EditPointView extends AbstractView {
-  #point = null;
+export default class EditPointView extends AbstractStatefulView {
+
   #destinations = [];
   #offers = [];
 
@@ -13,7 +13,8 @@ export default class EditPointView extends AbstractView {
 
   constructor({point = BLANK_POINT, destinations, offers, onFormSubmit, onFormRollup}) {
     super();
-    this.#point = point;
+
+    this._setState(EditPointView.parsePointToState(point));
     this.#destinations = destinations;
     this.#offers = offers;
 
@@ -24,16 +25,25 @@ export default class EditPointView extends AbstractView {
   }
 
   get template() {
-    return createEditPointTemplate(this.#point, this.#destinations, this.#offers);
+    return createEditPointTemplate(this._state, this.#destinations, this.#offers);
   }
 
   #formSubmitHandler = (evt) => {
     evt.preventDefault();
-    this.#handleFormSubmit(this.#point);
+    this.#handleFormSubmit(EditPointView.parseStateToPoint(this._state));
   };
 
   #formRollupHandler = (evt) => {
     evt.preventDefault();
     this.#handleFormRollup();
   };
+
+  static parsePointToState(point) {
+    return {...point};
+  }
+
+  static parseStateToPoint(state) {
+    const point = {...state};
+    return point;
+  }
 }
