@@ -19,13 +19,24 @@ export default class EditPointView extends AbstractStatefulView {
     this.#offers = offers;
 
     this.#handleFormSubmit = onFormSubmit;
-    this.element.querySelector('form').addEventListener('submit', this.#formSubmitHandler);
     this.#handleFormRollup = onFormRollup;
-    this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#formRollupHandler);
+    this._restoreHandlers();
   }
 
   get template() {
     return createEditPointTemplate(this._state, this.#destinations, this.#offers);
+  }
+
+  reset(point) {
+    this.updateElement(
+      EditPointView.parsePointToState(point),
+    );
+  }
+
+  _restoreHandlers() {
+    this.element.querySelector('form').addEventListener('submit', this.#formSubmitHandler);
+    this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#formRollupHandler);
+    this.element.querySelector('.event__type-group').addEventListener('change', this.#eventTypeToggleHandler);
   }
 
   #formSubmitHandler = (evt) => {
@@ -36,6 +47,13 @@ export default class EditPointView extends AbstractStatefulView {
   #formRollupHandler = (evt) => {
     evt.preventDefault();
     this.#handleFormRollup();
+  };
+
+  #eventTypeToggleHandler = (evt) => {
+    evt.preventDefault();
+    this.updateElement({
+      type: evt.target.value,
+    });
   };
 
   static parsePointToState(point) {
