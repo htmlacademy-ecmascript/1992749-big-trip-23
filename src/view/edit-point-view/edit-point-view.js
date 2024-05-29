@@ -37,6 +37,7 @@ export default class EditPointView extends AbstractStatefulView {
     this.element.querySelector('form').addEventListener('submit', this.#formSubmitHandler);
     this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#formRollupHandler);
     this.element.querySelector('.event__type-group').addEventListener('change', this.#eventTypeToggleHandler);
+    this.element.querySelector('.event__input--destination').addEventListener('change', this.#destinationListToggleHandler);
   }
 
   #formSubmitHandler = (evt) => {
@@ -53,6 +54,16 @@ export default class EditPointView extends AbstractStatefulView {
     evt.preventDefault();
     this.updateElement({
       type: evt.target.value,
+    });
+  };
+
+  #destinationListToggleHandler = (evt) => {
+    evt.preventDefault();
+    const selectedDistination = this.#destinations.find((item) => item.name === evt.target.value);
+    const selectedDistinationId = (selectedDistination) ? selectedDistination.id : this._state.destination;
+
+    this.updateElement({
+      destination: selectedDistinationId,
     });
   };
 
