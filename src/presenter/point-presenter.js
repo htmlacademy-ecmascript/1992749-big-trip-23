@@ -88,6 +88,7 @@ export default class PointPresenter {
   #escKeyDownHandler = (evt) => {
     if (evt.key === 'Escape') {
       evt.preventDefault();
+      this.#editPointComponent.reset(this.#point);
       this.#replaceFormToPoint();
       document.removeEventListener('keydown', this.#escKeyDownHandler);
     }
@@ -107,6 +108,7 @@ export default class PointPresenter {
   };
 
   #handleFormRollup = () => {
+    this.#editPointComponent.reset(this.#point);
     this.#replaceFormToPoint();
   };
 }

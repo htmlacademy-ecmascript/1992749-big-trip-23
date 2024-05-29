@@ -50,7 +50,8 @@ const getAvailableDestination = (point, currentDestination) => (
   ` : ''}
 ` : '';
 
-const createEditPointTemplate = (point, destinations, offers) => {
+const createEditPointTemplate = (state, destinations, offers) => {
+  const point = state;
   const {basePrice, type, dateFrom, dateTo} = point;
   const currentDestination = destinations.find((item) => item.id === point.destination);
   const currentOffersForType = offers.find((item) => item.type === point.type).offers;
