@@ -55,13 +55,19 @@ export default class EditPointView extends AbstractStatefulView {
     this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#formRollupHandler);
     this.element.querySelector('.event__type-group').addEventListener('change', this.#eventTypeToggleHandler);
     this.element.querySelector('.event__input--destination').addEventListener('change', this.#destinationListToggleHandler);
-
+    this.element.querySelector('.event__input--price').addEventListener('change',this.#priceChangeHandler);
     if (this.element.querySelector('.event__available-offers')) {
       this.element.querySelector('.event__available-offers').addEventListener('change', this.#offerClickHandler);
     }
 
     this.#setDatepicker();
   }
+
+  #priceChangeHandler = (evt) => {
+    this._setState({
+      basePrice: Number(evt.target.value)
+    });
+  };
 
   #offerClickHandler = (evt) => {
     evt.preventDefault();
