@@ -56,8 +56,21 @@ export default class EditPointView extends AbstractStatefulView {
     this.element.querySelector('.event__type-group').addEventListener('change', this.#eventTypeToggleHandler);
     this.element.querySelector('.event__input--destination').addEventListener('change', this.#destinationListToggleHandler);
 
+    if (this.element.querySelector('.event__available-offers')) {
+      this.element.querySelector('.event__available-offers').addEventListener('change', this.#offerClickHandler);
+    }
+
     this.#setDatepicker();
   }
+
+  #offerClickHandler = (evt) => {
+    evt.preventDefault();
+    const checkboxes = Array.from(this.element.querySelectorAll('.event__offer-checkbox:checked'));
+
+    this.updateElement({
+      offers: checkboxes.map((element) => element.dataset.id),
+    });
+  };
 
   #formSubmitHandler = (evt) => {
     evt.preventDefault();
