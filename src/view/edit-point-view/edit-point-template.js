@@ -20,7 +20,7 @@ const getAvailableOffers = (currentOffersForType, type, point) => (currentOffers
 
   <div class="event__offer-selector">
     <input class="event__offer-checkbox  visually-hidden" id="event-offer-${type}-${item.id}" type="checkbox" name="event-offer-${type}" 
-    ${point.offers.find((element) => element === item.id) ? 'checked' : ''}>
+    ${point.offers.find((element) => element === item.id) ? 'checked' : ''} data-id="${item.id}">
     <label class="event__offer-label" for="event-offer-${type}-${item.id}">
       <span class="event__offer-title">${item.title}</span>
       &plus;&euro;&nbsp;
